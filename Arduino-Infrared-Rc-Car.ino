@@ -1,183 +1,140 @@
+#include <IRremote.h>
 #include <Servo.h>
 
+IRrecv irrecv(2);
+
+decode_results results;
+
 Servo steer;
+
+#define POWER 0xE0E040BF
+#define BUTTON1 0xE0E020DF
+#define BUTTON2 0xE0E0A05F
+#define BUTTON3 0xE0E0609F
+#define BUTTON4 0xE0E010EF
+#define BUTTON5 0xE0E0906F
+#define BUTTON6 0xE0E050AF
+#define BUTTON7 0xE0E030CF
+#define BUTTON8 0xE0E0B04F
+#define BUTTON9 0xE0E0708F
+#define BUTTON0 0xE0E08877
+#define UP 0xE0E006F9
+#define LEFT 0xE0E0A659
+#define OK 0xE0E016E9
+#define RIGHT 0xE0E046B9
+#define DOWN 0xE0E08679
 
 const int ff = 4;
 const int bb = 5;
 const int en = 3;
 const int buzzer = 11;
-String readString;
 
-int hiz;
+int velocity;
+int angle;
 
 void setup() 
 {
-  Serial.begin(9600); 
-  pinMode(ff , OUTPUT);
-  pinMode(bb , OUTPUT); 
-  pinMode(en , OUTPUT);
+  Serial.begin(9600);
+  irrecv.enableIRIn();
   pinMode(buzzer , OUTPUT);
-  steer.attach(2);   
+  pinMode(ff , OUTPUT);
+  pinMode(bb , OUTPUT);
+  pinMode(en , OUTPUT);
+  steer.attach(6);
+  digitalWrite(buzzer , LOW);
+  digitalWrite(ff , LOW);
+  digitalWrite(bb , LOW);
+  analogWrite(en , 0);
+  angle = 86;
+  steer.write(angle);
 }
+
 void loop() 
 {
-  while (Serial.available()) 
+  if (irrecv.decode(&results))
   {
-    delay(3);  
-    char c = Serial.read();
-    readString += c; 
-  }
-  if (readString.length() >0) 
-  {
-    Serial.println(readString);
-
-    if (readString == "00")
-    {
-      steer.write(71);
-    }
-    if (readString == "1")
-    {
-      steer.write(74);
-    }
-    if (readString == "2")
-    {
-      steer.write(75);
-    }
-    if (readString == "3")
-    {
-      steer.write(77);
-    }
-    if (readString == "4")
-    {
-      steer.write(78);
-    }
-    if (readString == "5")
-    {
-      steer.write(80);
-    }
-    if (readString == "6")
-    {
-      steer.write(81);
-    }
-    if (readString == "7")
-    {
-      steer.write(83);
-    }
-    if (readString == "8")
-    {
-      steer.write(84);
-    }
-    if (readString == "9")
-    {
-      steer.write(86);
-    }
-    if (readString == "110")
-    {
-      steer.write(88);
-    }
-    if (readString == "11")
-    {
-      steer.write(89);
-    }
-    if (readString == "12")
-    {
-      steer.write(91);
-    }
-    if (readString == "13")
-    {
-      steer.write(92);
-    }
-    if (readString == "14")
-    {
-      steer.write(94);
-    }
-    if (readString == "15")
-    {
-      steer.write(95);
-    }
-    if (readString == "16")
-    {
-      steer.write(97);
-    }
-    if (readString == "17")
-    {
-      steer.write(98);
-    }
-    if (readString == "18")
-    {
-      steer.write(100);
-    }
-    
-    if (readString == "0")     
-    {
-      hiz = 0;
-    }
-    if (readString == "10")     
-    {
-      hiz = 25;
-    }
-    if (readString == "20")     
-    {
-      hiz = 50;
-    }
-    if (readString == "30")     
-    {
-      hiz = 75;
-    }
-    if (readString == "40")     
-    {
-      hiz = 100;
-    }
-    if (readString == "50")     
-    {
-      hiz = 125;
-    }
-    if (readString == "60")     
-    {
-      hiz = 150;
-    }
-    if (readString == "70")     
-    {
-      hiz = 175;
-    }
-    if (readString == "80")     
-    {
-      hiz = 200;
-    }
-    if (readString == "90")     
-    {
-      hiz = 225;
-    }
-    if (readString == "100")     
-    {
-      hiz = 255;
-    }
-    if (readString == "f")     
-    {
-      analogWrite(en , hiz);
-      digitalWrite(ff , HIGH);
-      digitalWrite(bb , LOW);
-    }
-    if (readString == "b")     
-    {
-      analogWrite(en , hiz);
-      digitalWrite(ff , LOW);
-      digitalWrite(bb , HIGH);
-    }
-    if (readString == "s")     
-    {
-      analogWrite(en , 0);
-      digitalWrite(ff , LOW);
-      digitalWrite(bb , LOW);
-    }
-    if (readString == "so")     
+    Serial.println(results.value, HEX);
+    Serial.println(velocity);
+    if(results.value == OK)
     {
       digitalWrite(buzzer , HIGH);
     }
-    if (readString == "sh")     
+    if(results.value == BUTTON0)
     {
-      digitalWrite(buzzer , LOW);
+      velocity = 25;
     }
-    readString="";
-  } 
+    if(results.value == BUTTON1)
+    {
+      velocity = 50;
+    }
+    if(results.value == BUTTON2)
+    {
+      velocity = 75;
+    }
+    if(results.value == BUTTON3)
+    {
+      velocity = 100;
+    }
+    if(results.value == BUTTON4)
+    {
+      velocity = 125;
+    }
+    if(results.value == BUTTON5)
+    {
+      velocity = 150;
+    }
+    if(results.value == BUTTON6)
+    {
+      velocity = 175;
+    }
+    if(results.value == BUTTON7)
+    {
+      velocity = 200;
+    }
+    if(results.value == BUTTON8)
+    {
+      velocity = 225;
+    }
+    if(results.value == BUTTON9)
+    {
+      velocity = 255;
+    }
+    if(results.value == UP)
+    {
+      digitalWrite(ff , HIGH);
+      digitalWrite(bb , LOW);
+      analogWrite(en , velocity);
+    }
+    if(results.value == DOWN)
+    {
+      digitalWrite(bb , HIGH);
+      digitalWrite(ff , LOW);
+      analogWrite(en , velocity);
+    }
+    if(results.value == LEFT)
+    {
+      angle = angle - 1;
+    }
+    if(results.value == RIGHT)
+    {
+      angle = angle + 1;
+    }
+    irrecv.resume();
+    steer.write(angle);
+    delay(100);
+  }
+  else
+  {
+    digitalWrite(buzzer , LOW);
+    digitalWrite(ff , LOW);
+    digitalWrite(bb , LOW);
+  }
+  if(angle > 100)
+  {
+    angle = 100;
+  }
+  if(angle < 71)
+  {
+    angle = 71;
+  }
 }
