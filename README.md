@@ -22,3 +22,5 @@ Materials to use:
 - 9v battery and connector,
 
 Video: https://www.youtube.com/watch?v=265YbpS6gwE&t=28s
+
+Note: This version uses a Samsung TV Remote to be controlled. You may need to chenge the button hex codes at beginning of the arduino code to use it with your remote.
