@@ -1,11 +1,11 @@
 # Arduino-Infrared-Rc-Car
 I made this car from a cheap rc car. Can be controlled with an infrared TV remote or with an smart phone via bluetooth.
 
-So this project has to versions: Bluetooht controlled, İnfrared controlled.
+So this project has to versions: Bluetooht controlled, Infrared controlled.
 
-This repository is for bluetooht version.
+This repository is for Infrared version.
 
-Click this link for bluetooht version:https://github.com/ahmetakif/Arduino-Bluetooth-Rc-Car
+Click this link for bluetooht version: https://github.com/ahmetakif/Arduino-Bluetooth-Rc-Car
 
 Materials to use:
 - Arduino uno clone,
