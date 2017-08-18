@@ -7,6 +7,9 @@ This repository is for Infrared version.
 
 Click this link for bluetooht version: https://github.com/ahmetakif/Arduino-Bluetooth-Rc-Car
 
+The folder named "IRremote" is the required Arduino library for the project.
+And after including this library you also need to delete the default library called "RobotIRremote" because it conflicts with the "IRremote" library
+
 Materials to use:
 - Arduino uno clone,
 - Hc-06 bluetooth module,
